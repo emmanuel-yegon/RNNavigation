@@ -1,49 +1,45 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-import HomeScreen from "./screens/HomeScreen";
-import AboutScreen from "./screens/AboutScreen";
-import { Pressable, Text } from "react-native";
+import CourseListScreen from "./screens/CourseListScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import SettingsScreen from "./screens/SettingsScreen";
+import { AboutStack } from "./AppStack";
 
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Home"
+      <Tab.Navigator
         screenOptions={{
-          headerStyle: {
-            backgroundColor: "#6a51ae",
-          },
-          headerTintColor: "#fff",
-          headerTitleStyle: { fontWeight: "bold" },
-          headerRight: () => (
-            <Pressable onPress={() => alert("Menu button pressed!")}>
-              <Text style={{ color: "#fff", fontSize: 16 }}>Menu</Text>
-            </Pressable>
-          ),
-          contentStyle: {
-            backgroundColor: "#e8e4f3",
-          },
+          tabBarLabelPosition: "below-icon",
+          tabBarShowLabel: true,
+          tabBarActiveTintColor: "purple",
         }}
       >
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
+        <Tab.Screen name="Course List" component={CourseListScreen} />
+        <Tab.Screen
+          name="Profile"
+          component={ProfileScreen}
           options={{
-            title: "Welcome Home",
+            tabBarLabel: "My Profile",
+            tabBarIcon: ({ color }) => (
+              <Ionicons name="person" size={20} color={color} />
+            ),
+            tabBarBadge: 1,
           }}
         />
-        <Stack.Screen
-          name="About"
-          component={AboutScreen}
-          initialParams={{ name: "Guest" }}
-          // options={({ route }) => ({
-          //   title: route.params.name,
-          // })}
+        <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen
+          name="About Stack"
+          component={AboutStack}
+          options={{
+            headerShown: false,
+          }}
         />
-      </Stack.Navigator>
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
